@@ -19,3 +19,9 @@ td{
     width : 25px;
     border : 1px solid rgb(10, 236, 214);
 }
+.unvisisted{
+    background-color : #fff;
+}
+.visited{
+    background-color : rgb(100, 36, 153)
+}
