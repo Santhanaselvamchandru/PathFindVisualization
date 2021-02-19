@@ -2,7 +2,7 @@ function NodeEvents(){
     var rows = document.getElementById('board').rows;
     var cells = document.querySelectorAll('td');
      for(let i = 0 ; i< cells.length ; i++){
-         cells[i].addEventListener('mousedown',()=>{
+         cells[i].addEventListener('click',()=>{
              cells[i].style.backgroundColor = "#000";
          });
      }
