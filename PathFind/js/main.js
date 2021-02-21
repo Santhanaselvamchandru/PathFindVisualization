@@ -48,5 +48,8 @@ function NodesCreate(rows,column){
         board.appendChild(tr);
     }
 }
-NodeEvents()
-NodesCreate(20,40)
+function allFun(){
+    NodesCreate(20,40)
+    setInterval(NodeEvents(),2000);
+}
+allFun();
