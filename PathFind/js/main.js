@@ -1,23 +1,46 @@
 function NodeEvents(){
-    var rows = document.getElementById('board').rows;
     var cells = document.querySelectorAll('td');
      for(let i = 0 ; i< cells.length ; i++){
-         cells[i].addEventListener('click',()=>{
-             cells[i].style.backgroundColor = "#000";
-         });
-     }
-    
-    
-    
-    
+        let drag = false;
+        cells[i].addEventListener('click', ()=> {
+            drag = false;
+        });
+        cells[i].addEventListener('mousemove',() => {
+            drag = true
+        });
+        cells[i].addEventListener('mouseup',() => {
+            if(drag){
+                Click(cells[i]);
+                move();     
+            }
+            else{
+                Click(cells[i]);
+            }
+        });
+        function Click(pos){
+            pos.setAttribute('class','walls');
+        }
+        function move(){
+            for(let j = 0 ; j< cells.length ; j++){
+                cells[j].addEventListener('mouseup',() => {
+                    cells[j].setAttribute('class','walls');
+                    move();
+                });
+                cells[j].addEventListener('mousedown',() => {
+                    cells[j].setAttribute('class','walls');
+                    move();
+                });
+            }
+        }
+     }    
 }
-function NodesCreate(){
+function NodesCreate(rows,column){
     const board = document.getElementById("board");
-    for(let i =0 ; i<20 ; i++){
+    for(let i =0 ; i<rows ; i++){
         var tr = document.createElement('tr');
         tr.setAttribute('class','unvisited');
         tr.setAttribute('id',`${i+1}`);
-        for(let j = 0 ; j<40;j++){
+        for(let j = 0 ; j<column;j++){
             var td = document.createElement('td');
             td.setAttribute('id',`${i+1}-${j+1}`);
             tr.appendChild(td);
@@ -25,5 +48,5 @@ function NodesCreate(){
         board.appendChild(tr);
     }
 }
-NodesCreate();
-NodeEvents();
+NodeEvents()
+NodesCreate(20,40)

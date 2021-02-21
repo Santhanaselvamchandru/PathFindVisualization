@@ -25,3 +25,6 @@ td{
 .visited{
     background-color : rgb(100, 36, 153)
 }
+.walls{
+    background-color :rgba(194, 54, 22,1.0);
+}
