@@ -1,5 +1,5 @@
 //Table cell events
-function NodeEvents(event){     
+function NodeEvents(){     
 }
 function clickFun(){
     console.log("click");
