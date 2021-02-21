@@ -1,39 +1,13 @@
-function NodeEvents(){
-    var cells = document.querySelectorAll('td');
-     for(let i = 0 ; i< cells.length ; i++){
-        let drag = false;
-        cells[i].addEventListener('click', ()=> {
-            drag = false;
-        });
-        cells[i].addEventListener('mousemove',() => {
-            drag = true
-        });
-        cells[i].addEventListener('mouseup',() => {
-            if(drag){
-                Click(cells[i]);
-                move();     
-            }
-            else{
-                Click(cells[i]);
-            }
-        });
-        function Click(pos){
-            pos.setAttribute('class','walls');
-        }
-        function move(){
-            for(let j = 0 ; j< cells.length ; j++){
-                cells[j].addEventListener('mouseup',() => {
-                    cells[j].setAttribute('class','walls');
-                    move();
-                });
-                cells[j].addEventListener('mousedown',() => {
-                    cells[j].setAttribute('class','walls');
-                    move();
-                });
-            }
-        }
-     }    
+//Table cell events
+function NodeEvents(event){     
 }
+function clickFun(){
+    console.log("click");
+}
+function mouseFun(){
+    console.log("move");
+}
+// Table Columns and rows create 
 function NodesCreate(rows,column){
     const board = document.getElementById("board");
     for(let i =0 ; i<rows ; i++){
@@ -48,8 +22,9 @@ function NodesCreate(rows,column){
         board.appendChild(tr);
     }
 }
+//Function calls
 function allFun(){
     NodesCreate(20,40)
-    setInterval(NodeEvents(),2000);
+    NodeEvents() ;
 }
 allFun();
