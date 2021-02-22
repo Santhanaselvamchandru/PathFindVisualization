@@ -11,9 +11,9 @@ body{
 }
 header{
     background-color :rgb(32, 191, 107) ;
-    color : rgb(255,255,255);
+    color : #fff;
 }
-header h1{
+header h2{
     padding : 0.5rem;
     text-transform : uppercase;
     text-align : center;
@@ -35,9 +35,17 @@ header ul li{
     font-weight :bold;
     cursor : pointer;
 }
+header ul li:nth-child(3){
+    background-color : #fff;
+    color : rgb(32, 191, 107);
+}
 header ul li:hover{
     border:1px solid rgb(255,255,255);
     color : rgb(255,255,255);
+    font-weight : bold;
+}
+header ul li:nth-child(3):hover{
+    color : rgb(32, 191, 107);
     font-weight : bold;
 }
 header ul li i{

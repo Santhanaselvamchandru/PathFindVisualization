@@ -16,15 +16,52 @@ class UI{
         }
     }
     static wallCreation(){
-        let width = document.getElementById("board").clientWidth;
-        let height = document.getElementById("board").clientHeight;
         let cells = board.querySelectorAll('td');
         for(let i=0 ;i<cells.length ;i++){
-            cells[i].addEventListener('click',(e)=>{
-                let x = e.clientX;
-                let y = e.clientY;
-                console.log("pos + ",Math.round((width + 40/ width - x)/40 )-40,Math.round(y - 20 / height));
-            });
+            // let drag = false;
+            // let sel = [];
+            // cells[i].addEventListener('click', () => {
+            //     if(cells[i].getAttribute('class') === 'walls'){
+            //         cells[i].removeAttribute('class');
+            //     }
+            //     else{
+            //         cells[i].setAttribute('class','walls');
+            //     }
+            // });
+            //cells[i].addEventListener("mousedown", start);
+            cells[i].addEventListener("focus", start);
+            //cells[i].addEventListener("click", click);
+            //cells[i].addEventListener("mouseout", cancel);
+            cells[i].addEventListener("touchend", end);//cancel);
+            cells[i].addEventListener("touchleave", cancel);
+            //cells[i].addEventListener("touchcancel", cancel);
+            
+            function start(){
+                console.log("start");
+            }
+            function end(){
+                console.log("end");
+            }
+            function cancel(){
+                console.log("cancel");
+            }
+        }
+    }
+    static found(arr,ele){
+        let temp = false;
+        for(let i = 0 ; i<arr.length;i++){
+            if(arr[i] === ele){
+                temp = true;
+                break;
+            }            
+        }
+        if(temp){
+            console.log('found');
+            return 1;
+        }
+        else{
+            console.log('found');
+            return 0;
         }
     }
 }
