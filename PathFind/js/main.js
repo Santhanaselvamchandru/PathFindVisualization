@@ -17,55 +17,36 @@ class UI{
     }
     static wallCreation(){
         let cells = board.querySelectorAll('td');
-        for(let i=0 ;i<cells.length ;i++){
-            // let drag = false;
-            // let sel = [];
-            // cells[i].addEventListener('click', () => {
-            //     if(cells[i].getAttribute('class') === 'walls'){
-            //         cells[i].removeAttribute('class');
-            //     }
-            //     else{
-            //         cells[i].setAttribute('class','walls');
-            //     }
-            // });
-            //cells[i].addEventListener("mousedown", start);
-            cells[i].addEventListener("focus", start);
-            //cells[i].addEventListener("click", click);
-            //cells[i].addEventListener("mouseout", cancel);
-            cells[i].addEventListener("touchend", end);//cancel);
-            cells[i].addEventListener("touchleave", cancel);
-            //cells[i].addEventListener("touchcancel", cancel);
-            
-            function start(){
-                console.log("start");
-            }
-            function end(){
-                console.log("end");
-            }
-            function cancel(){
-                console.log("cancel");
-            }
-        }
-    }
-    static found(arr,ele){
-        let temp = false;
-        for(let i = 0 ; i<arr.length;i++){
-            if(arr[i] === ele){
-                temp = true;
-                break;
-            }            
-        }
-        if(temp){
-            console.log('found');
-            return 1;
-        }
-        else{
-            console.log('found');
-            return 0;
-        }
+        cells.forEach((cell)=>{
+            let isPressed = false;
+            cell.addEventListener('click',()=>isPressed = false);
+            cell.addEventListener('mousedown',()=>isPressed = true);
+            cell.addEventListener('mouseup',()=>isPressed = false);
+            cell.addEventListener('mousemove',()=>{
+                if(isPressed){
+                    movesId(isPressed);
+                } 
+            });
+        });
     }
 }
-
+function movesId(id){
+    let cells = board.querySelectorAll('td');
+    cells.forEach((cell) =>{
+        cell.addEventListener('mousemove',(e)=>{
+            
+            if(id){
+                cell.setAttribute('class','walls');
+                if(e.mouseleave){
+                    e.stopPropagation();
+                }
+            }
+        });
+    });
+}
+function clickId(id){
+    console.log("click",id);
+}
 //Function calls 1280 521
 function FunctionCalls(){
     UI.NodesCreate(20,40);
