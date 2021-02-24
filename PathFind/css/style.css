@@ -81,4 +81,11 @@ td{
     background-size : 1.3rem;
     background-repeat : no-repeat;
     background-position : center;
+    cursor : pointer;
+}
+.target{
+    background-size : 1.3rem;
+    background-repeat : no-repeat;
+    background-position : center;
+    cursor : pointer;
 }
