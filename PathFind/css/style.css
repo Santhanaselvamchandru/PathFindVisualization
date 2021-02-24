@@ -77,3 +77,8 @@ td{
 .walls{
     background-color :rgba(194, 54, 22,1.0);
 }
+.start{
+    background-size : 1.3rem;
+    background-repeat : no-repeat;
+    background-position : center;
+}

@@ -15,42 +15,26 @@ class UI{
             board.appendChild(tr);
         }
     }
-    static wallCreation(){
+    static wallCreation(row , col){
         let cells = board.querySelectorAll('td');
-        cells.forEach((cell)=>{
-            let isPressed = false;
-            cell.addEventListener('click',()=>isPressed = false);
-            cell.addEventListener('mousedown',()=>isPressed = true);
-            cell.addEventListener('mouseup',()=>isPressed = false);
-            cell.addEventListener('mousemove',()=>{
-                if(isPressed){
-                    movesId(isPressed);
-                } 
-            });
+        let get_row = row / 2;
+        let get_col = Math.round(col / 3);
+        console.log(get_row,get_col); 
+        let startPoint = document.getElementById(`${get_row}-${get_col}`); 
+        startPoint.setAttribute('class','start');
+        startPoint.style.backgroundImage = 'url(./images-icons/start-node.svg)';
+        cells.forEach((cell)=>{ 
+
+                   
         });
     }
 }
-function movesId(id){
-    let cells = board.querySelectorAll('td');
-    cells.forEach((cell) =>{
-        cell.addEventListener('mousemove',(e)=>{
-            
-            if(id){
-                cell.setAttribute('class','walls');
-                if(e.mouseleave){
-                    e.stopPropagation();
-                }
-            }
-        });
-    });
-}
-function clickId(id){
-    console.log("click",id);
-}
 //Function calls 1280 521
 function FunctionCalls(){
-    UI.NodesCreate(20,40);
-    UI.wallCreation();
+    let row = 20;
+    let col = 40;
+    UI.NodesCreate(row , col);
+    UI.wallCreation(row , col);
     
 }
 FunctionCalls();
