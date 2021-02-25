@@ -78,14 +78,22 @@ td{
     background-color :rgba(194, 54, 22,1.0);
 }
 .start{
-    background-size : 1.3rem;
+    height : 23px;
+    width : 23px;
+    background-image : url('../images-icons/start-node.svg');
+    background-size : cover;
     background-repeat : no-repeat;
     background-position : center;
     cursor : pointer;
+    margin-left : 0.2rem;
 }
 .target{
-    background-size : 1.3rem;
+    height : 23px;
+    width : 23px;
+    background-image : url('../images-icons/circle.svg');
+    background-size : cover;
     background-repeat : no-repeat;
     background-position : center;
     cursor : pointer;
+    margin-left : 0.2rem;
 }

@@ -21,14 +21,18 @@ class UI{
         let get_col = Math.round(col / 3);
         let startPoint = document.getElementById(`${get_row}-${get_col}`); 
         let targetPoint = document.getElementById(`${get_row}-${get_col + 15}`);
-        startPoint.setAttribute('class','start');
-        targetPoint.setAttribute('class','target');
-        startPoint.style.backgroundImage = 'url(./images-icons/start-node.svg)';
-        targetPoint.style.backgroundImage = 'url(./images-icons/circle.svg)';
+        startPoint.appendChild(UI.nodeCreate('start'));
+        targetPoint.appendChild(UI.nodeCreate('target'));
         cells.forEach((cell)=>{ 
 
                    
         });
+    }
+    static nodeCreate(name){
+        var div = document.createElement('div');
+        div.setAttribute('class',name);
+        div.setAttribute('draggable','true');
+        return div;
     }
 }
 //Function calls 1280 521
