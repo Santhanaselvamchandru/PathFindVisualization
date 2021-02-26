@@ -6,73 +6,92 @@
 body{
     height : 110vh;
     width : 100%;
-    background-color : rgb(38, 222, 129);
+    background: rgba(255, 255, 255, 1) ;
     overflow-x : hidden;
+    color : rgba(3, 201, 169, 1);
+    opacity : 0.8;
 }
 header{
-    background-color :rgb(32, 191, 107) ;
-    color : #fff;
+    background: #4FD1FA;
+    color : rgba(255,255,255,1);
+    display : flex;
+    padding : 0.9rem;
+    height : 4rem;
+    align-items : center;
+    justify-content : space-between;
 }
 header h2{
-    padding : 0.5rem;
     text-transform : uppercase;
-    text-align : center;
 }
 header ul{
     display : flex;
+    color : rgb(255,255,255);
+    align-items : center;;
     list-style-type :none;
-    display :flex;
-    align-items :center;
-    text-align :center;
-    justify-content :center;
-
 }
 header ul li{
-    padding : 0.9rem;
-    margin: 0.5rem 3rem;
+    display : flex;
     text-transform : uppercase;
     font-size : 1rem;
     font-weight :bold;
     cursor : pointer;
-}
-header ul li:nth-child(3){
-    background-color : #fff;
-    color : rgb(32, 191, 107);
+    margin-right : 2rem;
 }
 header ul li:hover{
-    border:1px solid rgb(255,255,255);
-    color : rgb(255,255,255);
-    font-weight : bold;
-}
-header ul li:nth-child(3):hover{
-    color : rgb(32, 191, 107);
-    font-weight : bold;
+    animation : pulseAnim 0.5s ease-in ;
 }
 header ul li i{
-    font-size : 1rem;
-    padding : 0.3rem 0 0 0.2rem;
+    font-size : 1.3rem;
+    margin-left : 0.2rem;
+}
+header ul li ul{
+    display : none;
+    color : #fff;
+    background : #4FD1FA;
+    position : absolute;
+    margin-top : 4rem;
+    flex-direction : column;
+    text-align :center;
+    align-items :center;
+}
+header ul li ul li{
+    padding : 0.9rem;
+}
+@keyframes pulseAnim{
+    0%{
+        font-size : 1rem;
+    }
+    50%{
+        font-size : 1.05rem;
+    }
+    100%{
+        font-size : 1rem;
+    }
 }
 table{
     height : 10rem;
     width : 78.125rem;
     margin : 1.5em auto;
     border-collapse : collapse;
-    box-shadow : 2px 1.5px 2px 1.5px rgba(255,255,255,1);
+    -webkit-box-shadow: 0px 1px 4px 1px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 1px 4px 1px rgba(0,0,0,0.2);
+    box-shadow: 0px 1px 4px 1px rgba(0,0,0,0.2);
 }
 tr {
     background-color : #fff;
-    border : 1px solid rgb(38, 222, 129);
+    border : 1px solid #4FD1FA;
 }
 td{
     height :1.7rem;
     width : 1.75rem;
-    border : 1px solid rgb(38, 222, 129);
+    justify-content : center;
+    border : 1px solid #4FD1FA;
 }
 .unvisisted{
     background-color : #fff;
 }
 .visited{
-    background-color : rgb(100, 36, 153)
+    background-color : rgb(100, 36, 153);
 }
 .walls{
     background-color :rgba(194, 54, 22,1.0);
@@ -84,8 +103,8 @@ td{
     background-size : cover;
     background-repeat : no-repeat;
     background-position : center;
-    cursor : pointer;
     margin-left : 0.2rem;
+    animation : nodeAnim 0.5s ease;
 }
 #target{
     height : 23px;
@@ -94,6 +113,24 @@ td{
     background-size : cover;
     background-repeat : no-repeat;
     background-position : center;
-    cursor : pointer;
     margin-left : 0.2rem;
+    animation : nodeAnim 0.5s ease;
+}
+@keyframes nodeAnim{
+    0%{
+        height : 12px;
+        width : 12px;
+    }
+    50%{
+        height : 16px;
+        width : 16px;
+    }
+    75%{
+        height : 20px;
+        width : 20px;
+    }
+    100%{
+        height : 23px;
+        width : 23px;
+    }
 }

@@ -30,7 +30,7 @@ class UI{
         var div = document.createElement('div');
         div.setAttribute('id',name);
         div.setAttribute('draggable','true');
-        div.setAttribute('ondragstart','UI.dragStart(event)')
+        div.setAttribute('ondragstart','UI.dragStart(event)');
         return div;
     }
     static startNode(row,col){
@@ -41,20 +41,17 @@ class UI{
         
     }
     static dragStart(e){
-        e.dataTransfer.setData('text/plain',e.target.id);
+        e.dataTransfer.setData('text',e.target.id);
     }
     static onDrop(e){
         e.preventDefault();
         var data = e.dataTransfer.getData('text');
-        console.log(document.getElementById(data));
-        if(data != document.getElementById('start').parentElement.id){
-            e.target.appendChild(document.getElementById(data));
-        }
-        
+        e.target.appendChild(document.getElementById(data));
     }
-    //drag over event
     static onDragover(e){
-        e.preventDefault();
+        if(e.target.id !== 'start' && e.target.id !== 'target'){
+            e.preventDefault();
+        }
     }
     static targetNode(row,col){
         let get_row = row / 2;
@@ -62,13 +59,42 @@ class UI{
         let targetPoint = document.getElementById(`${get_row}-${get_col + 15}`);
         targetPoint.appendChild(UI.nodeCreate('target'));
     }
+    static displayUl(){
+        let algo = document.getElementById('algo');
+        let algoUl = document.getElementById('algo-ul');
+        let maze = document.getElementById('maze');
+        let mazeUl = document.getElementById('maze-ul');
+        algo.addEventListener('click',()=>{
+            if(algoUl.style.display === 'none' && (mazeUl.style.display === 'none' || mazeUl.style.display === 'block')){
+                if(mazeUl.style.display === "block"){
+                    mazeUl.style.display = 'none';
+                }
+                algoUl.style.display = 'block';
+            }
+            else{
+                algoUl.style.display = 'none'
+            }
+        })
+        maze.addEventListener('click',()=>{
+            if(mazeUl.style.display === 'none' && (algoUl.style.display === 'block' || algoUl.style.display === 'none') ){
+                mazeUl.style.display = 'block';  
+                if(algoUl.style.display === "block"){
+                    algoUl.style.display = 'none';
+                }
+                algoUl.style.display = 'block';              
+            }
+            else{
+                mazeUl.style.display = 'none'
+            }
+        })
+    }
 }
 //Function calls 1280 521
 function FunctionCalls(){
     let row = 20;
     let col = 40;
+    UI.displayUl();
     UI.NodesCreate(row , col);
     UI.wallCreation(row , col);
-    
 }
 FunctionCalls();
