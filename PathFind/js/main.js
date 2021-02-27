@@ -17,15 +17,15 @@ class UI{
             board.appendChild(tr);
         }
     }
+    //wall creation
     static wallCreation(row , col){
         let cells = board.querySelectorAll('td');
         this.startNode(row,col);
         this.targetNode(row,col);
-        cells.forEach((cell)=>{ 
-
-                   
+        cells.forEach((cell)=>{   
         });
     }
+    //start and target elements create
     static nodeCreate(name){
         var div = document.createElement('div');
         div.setAttribute('id',name);
@@ -33,6 +33,7 @@ class UI{
         div.setAttribute('ondragstart','UI.dragStart(event)');
         return div;
     }
+    //start node default place
     static startNode(row,col){
         let get_row = row / 2;
         let get_col = Math.round(col / 3);
@@ -40,54 +41,65 @@ class UI{
         startPoint.appendChild(UI.nodeCreate('start'));
         
     }
+    // activate draggable events
     static dragStart(e){
         e.dataTransfer.setData('text',e.target.id);
     }
     static onDrop(e){
         e.preventDefault();
         var data = e.dataTransfer.getData('text');
-        e.target.appendChild(document.getElementById(data));
+        if(data === 'start' || data === 'target'){
+            e.target.appendChild(document.getElementById(data));
+        }
     }
     static onDragover(e){
         if(e.target.id !== 'start' && e.target.id !== 'target'){
             e.preventDefault();
         }
     }
+    //target node default place
     static targetNode(row,col){
         let get_row = row / 2;
         let get_col = Math.round(col / 3); 
         let targetPoint = document.getElementById(`${get_row}-${get_col + 15}`);
         targetPoint.appendChild(UI.nodeCreate('target'));
     }
+    //header list display events
     static displayUl(){
         let algo = document.getElementById('algo');
         let algoUl = document.getElementById('algo-ul');
         let maze = document.getElementById('maze');
         let mazeUl = document.getElementById('maze-ul');
         algo.addEventListener('click',()=>{
-            if(algoUl.style.display === 'none' && (mazeUl.style.display === 'none' || mazeUl.style.display === 'block')){
-                if(mazeUl.style.display === "block"){
+            if(algoUl.style.display === 'none'){
+                if(mazeUl.style.display === 'block'){
                     mazeUl.style.display = 'none';
+                    algoUl.style.display = 'block';
                 }
-                algoUl.style.display = 'block';
-            }
+                else{
+                    algoUl.style.display = 'block';
+                }                
+            }   
             else{
-                algoUl.style.display = 'none'
+                algoUl.style.display = 'none';
             }
         })
         maze.addEventListener('click',()=>{
-            if(mazeUl.style.display === 'none' && (algoUl.style.display === 'block' || algoUl.style.display === 'none') ){
-                mazeUl.style.display = 'block';  
-                if(algoUl.style.display === "block"){
+            if(mazeUl.style.display === 'none'){
+                if(algoUl.style.display === 'block'){
                     algoUl.style.display = 'none';
+                    mazeUl.style.display = 'block';
                 }
-                algoUl.style.display = 'block';              
-            }
+                else{
+                    mazeUl.style.display = 'block';
+                }
+            }   
             else{
-                mazeUl.style.display = 'none'
+                mazeUl.style.display = 'none';
             }
         })
     }
+
 }
 //Function calls 1280 521
 function FunctionCalls(){
