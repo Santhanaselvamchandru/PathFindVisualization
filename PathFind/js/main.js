@@ -1,8 +1,7 @@
 class UI{
-    static board = document.getElementById("board");
+    static board = document.getElementById('board');
     // Table Columns and rows create 
     static NodesCreate(rows,column){
-        
         for(let i =0 ; i<rows ; i++){
             var tr = document.createElement('tr');
             tr.setAttribute('class','unvisited');
@@ -22,8 +21,7 @@ class UI{
         let cells = board.querySelectorAll('td');
         this.startNode(row,col);
         this.targetNode(row,col);
-        cells.forEach((cell)=>{   
-        });
+         
     }
     //start and target elements create
     static nodeCreate(name){
@@ -38,8 +36,7 @@ class UI{
         let get_row = row / 2;
         let get_col = Math.round(col / 3);
         let startPoint = document.getElementById(`${get_row}-${get_col}`); 
-        startPoint.appendChild(UI.nodeCreate('start'));
-        
+        startPoint.appendChild(UI.nodeCreate('start')); 
     }
     // activate draggable events
     static dragStart(e){
@@ -101,10 +98,11 @@ class UI{
     }
 
 }
-//Function calls 1280 521
+//Function calls
 function FunctionCalls(){
-    let row = 20;
-    let col = 40;
+    let board = document.getElementById('board');
+    let row = Math.floor(board.clientHeight /8);
+    let col = Math.floor(board.clientWidth / 32) + 1;
     UI.displayUl();
     UI.NodesCreate(row , col);
     UI.wallCreation(row , col);
