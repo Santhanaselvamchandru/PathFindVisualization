@@ -50,7 +50,7 @@ class UI{
         }
     }
     static onDragover(e){
-        if(e.target.id !== 'start' && e.target.id !== 'target'){
+        if(e.target.id !== 'start' && e.target.id !== 'target' && e.target.className !== 'walls'){
             e.preventDefault();
         }
     }

@@ -14,47 +14,77 @@ function recursiveDivision(row,col){
             }
         }
     }
-    maze(2,2,row-1,col-1);
+    let callTime = 0;
+    maze(1,1,row-1,col-1,callTime);
 }
-function maze(startRow,startCol , endRow,endCol){
-    console.log('start row ',startRow,'start col ',startCol,'end row ',endRow,'end col ',endCol)
-    if( endRow <= startRow || endCol <= startCol){
+
+function maze(startRow,startCol , endRow,endCol,callTime){
+
+    if( endRow < startRow || endCol < startCol || callTime > 3){
         return;
     }
-    let centerRow = Math.floor(endRow / 2 ) +1;
-    let centerCol = Math.floor(endCol / 2 ) +1;
+    let centerRow = Math.floor((startRow + endRow) / 2 );
+    let centerCol = Math.floor((startCol + endCol) / 2 );
+    if(centerRow > endRow || centerCol > endCol){
+        return;
+    }
+    callTime += 1;
     //row maze generation
-    for(let i = startRow; i <= endCol ; i++ ){
+    /*for(let i = startRow; i <= endCol ; i++ ){
         wallgenerate(centerRow,i);
     }
     //column maze generation
     for(let j = startCol ; j <= endRow ; j++){
         wallgenerate(j,centerCol);
-    }
-    //left hole
-    let left_to_center = Math.floor((Math.random() * (centerCol-startCol)) + startCol);
-    holegen(centerRow,left_to_center);
-    //right hole
-    let center_to_right = Math.floor((Math.random() * (endCol-centerCol)) + centerCol);
-    holegen(centerRow,center_to_right);
-    //top hole
-    let top_to_center = Math.floor((Math.random() * (centerRow-startRow)) + startRow);
-    holegen(top_to_center,centerCol);
-    //bottom hole
-    let center_to_bottom = Math.floor((Math.random() * (endRow-centerRow)) + centerRow);
-    holegen(center_to_bottom , centerCol);
-    //startRow ,startCol , endRow,endCol
-    //left-top room
-    maze(startRow+1,startCol+1,centerRow-1,centerCol-1);
-    //left-bottom room
-    //maze(centerRow+1,centerRow+1,endRow-1,centerCol-1);
-    //right-top room
-    //maze(startRow+1,startCol+1,centerRow-1,endCol-1);
-    //right-bottom room
-    //maze(centerCol+1,centerCol+1,endRow-1,endCol-1);
-
+    }*/
+    for(let i = startRow ; i <= endRow ; i++){
+        for(let j = startCol ; j <= endCol; j++){
+            if(j == centerCol){
+                wallgenerate(i,j);
+            }
+            else if(i == centerRow){
+                wallgenerate(i,j);
+            }
+        }
+    }    
+      /*       Random Holes           */
+    //left hole 
+    let left_hole = Math.floor(Math.random() * (centerCol - startCol) + startCol);
+    holegen(centerRow,left_hole);
+    let left_hole1 = Math.floor(Math.random() * (centerCol - startCol) + startCol);
+    holegen(centerRow,left_hole1);
+    //right hole 
+    let right_hole= Math.floor(Math.random() * (endCol - centerCol)+centerCol);
+    holegen(centerRow,right_hole);
+    let right_hole1 = Math.floor(Math.random() * (endCol - centerCol)+centerCol);
+    holegen(centerRow,right_hole1);
+    //top vertical hole 
+    let top_to_center = Math.floor(Math.random() * (centerRow - startRow ) + startRow);
+    holegen(centerCol,top_to_center);
+    let top_to_center1 = Math.floor(Math.random() * (centerRow - startRow ) + startRow);
+    holegen(centerCol,top_to_center1);
+    //bottom vertical hole 
+    let center_to_bottom = Math.floor(Math.random() * (endRow - centerRow) + centerRow);
+    holegen(centerCol,center_to_bottom);
+    let center_to_bottom1 = Math.floor(Math.random() * (endRow - centerRow) + centerRow);
+    holegen(centerCol,center_to_bottom1);
+    /*      Recursively  maze generate             */
+    //left-top maze 
+    maze(startRow,startCol,centerRow,centerCol,callTime);
+    //left-bottom maze
+    maze(centerRow+1,startCol,endRow,centerCol,callTime);
+    //right-top maze
+    maze(startRow,centerCol+1,centerRow,endCol,callTime);
+    //right-bottom maze
+    maze(centerRow+1,centerCol+1,endRow,endCol,callTime);
 }
 function holegen(i,j){
+    if(i === 1 || i === 20 || j === 1 || j === 40){
+        return;
+    }
+    if(i > 20 || j > 40){
+        return;
+    }
     let start = document.getElementById('start').parentNode.id;
     let target = document.getElementById('target').parentNode.id;
     if( `${i}-${j}` !== start && `${i}-${j}` !== target ){
@@ -65,7 +95,7 @@ function wallgenerate(i,j){
     //console.log("wall gen = ",i,j);
     let start = document.getElementById('start').parentNode.id;
     let target = document.getElementById('target').parentNode.id;
-    if( `${i}-${j}` !== start && `${i}-${j}` !== target ){
+    if( `${i}-${j}` !== start && `${i}-${j}` !== target){
         document.getElementById(`${i}-${j}`).setAttribute('class','walls');
     }
 }
