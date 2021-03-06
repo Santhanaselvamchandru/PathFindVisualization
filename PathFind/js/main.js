@@ -101,8 +101,8 @@ class UI{
 //Function calls
 function FunctionCalls(){
     let board = document.getElementById('board');
-    let row = Math.floor(board.clientHeight /8);
-    let col = Math.floor(board.clientWidth / 32) + 1;
+    let row = Math.floor(board.clientHeight /27.2);
+    let col = Math.floor(board.clientWidth / 30.5);
     UI.displayUl();
     UI.NodesCreate(row , col);
     UI.wallCreation(row , col);
