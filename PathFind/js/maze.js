@@ -15,32 +15,13 @@ function recursiveDivision(){
     maze_gen(1,1,rows,cols);
 }
 function maze_gen(startRow,startCol,endRow,endCol){
-    if(endRow < startRow || endCol < startCol || endRow > rows || endCol > cols || startRow < 1 || startCol < 1){
-        return ;
-    }
-    let centerRow = Math.floor(endRow /2) ;
-    let centerCol = Math.floor(endCol / 2);
-    if(centerRow === endRow || centerCol === endCol){
-        return;
-    }
-
-    for(let j = startCol ; j < endCol ; j++){
-        fillWall(centerRow,j);
-    }
-    for(let i = startRow ; i < endRow ; i++){
-        fillWall(i,centerCol);
-    }
-    //left room
-    maze_gen(startRow ,startCol,centerRow,centerCol);
-    //right room
-    maze_gen(centerRow ,centerCol,endRow,endCol);
+    
 }
 function fillWall(row,col){
-    console.log(row,col)
     let start = document.getElementById('start').parentNode.id;
     let target = document.getElementById('target').parentNode.id;
     let wall = document.getElementById(`${row}-${col}`);
-    if(wall.id !== start && wall.id !== target ){
+    if(wall.id !== start && wall.id !== target){
         wall.setAttribute('class','walls');
     }
 }
