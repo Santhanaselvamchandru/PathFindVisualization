@@ -12,15 +12,42 @@ function recursiveDivision(){
             }
         }
     }
-    maze_gen(1,1,rows,cols);
+    let count = 0;
+    maze_gen(2,2,rows-1,cols-1,count);
 }
-function maze_gen(startRow,startCol,endRow,endCol){
+function maze_gen(start_row,start_col,end_row,end_col,count){
+    count++;
+    let center_row = Math.round((start_row + end_row) / 2)-1;
+    let center_col = Math.round((start_col + end_col) / 2)-1;
+
+    if(start_row < 1 || end_row > rows || start_col <= 1 || end_col >= cols || count > 5){
+        return;
+    }
+    //columns
+    for(let j = start_row+1 ; j < end_row ; j++){
+        fillWall(j,center_col);
+    }
+    //rows
+    for(let i = start_col+1; i < end_col ; i++){
+        fillWall(center_row , i);
+    }
     
+    // Left Room
+    maze_gen(start_row+1,start_col ,center_row,center_col-1,count);
+    //right room
+    maze_gen(start_row ,center_col +1,center_row-1,end_col,count);
+    //left-bottom room
+   maze_gen(center_row+1,start_col,end_row,center_col-1,count);
+   //right-bottom room
+   maze_gen(center_row,center_col+1,end_row-1,end_col,count);
 }
 function fillWall(row,col){
     let start = document.getElementById('start').parentNode.id;
     let target = document.getElementById('target').parentNode.id;
     let wall = document.getElementById(`${row}-${col}`);
+    if(!wall){
+        return;
+    }
     if(wall.id !== start && wall.id !== target){
         wall.setAttribute('class','walls');
     }
