@@ -7,39 +7,50 @@ function recursiveDivision(){
     for(let i = 0 ; i < rows ; i++){
         for(let j = 0 ; j < cols ; j++){
             if(i === 0 || j === 0 || i === rows-1 || j === cols-1){
-                let wall = document.getElementById(`${i+1}-${j+1}`);
-                wall.setAttribute('class','walls');
+                fillWall(i,j);
             }
         }
     }
     let count = 0;
-    maze_gen(2,2,rows-1,cols-1,count);
+    recmaze(1,1,rows-1,cols-1,count);
 }
-function maze_gen(start_row,start_col,end_row,end_col,count){
-    count++;
-    let center_row = Math.round((start_row + end_row) / 2)-1;
-    let center_col = Math.round((start_col + end_col) / 2)-1;
-
-    if(start_row < 1 || end_row > rows || start_col <= 1 || end_col >= cols || count > 5){
+function recmaze(start_row,start_col,end_row,end_col,count){
+    count = count + 1;
+    if(start_row > end_row || start_col > end_col || count > 3){
         return;
     }
-    //columns
-    for(let j = start_row+1 ; j < end_row ; j++){
-        fillWall(j,center_col);
+    let center_col = Math.floor((start_col+end_col)/2);
+    let center_row = Math.floor((start_row + end_row)/2);
+    //console.log(center_row,center_col)
+    for(let i = start_row;i<end_row;i=i+1){
+        fillWall(i,center_col);
     }
-    //rows
-    for(let i = start_col+1; i < end_col ; i++){
-        fillWall(center_row , i);
+    for(let j = start_col ; j<end_col ; j = j+1){
+        fillWall(center_row,j);
     }
-    
-    // Left Room
-    maze_gen(start_row+1,start_col ,center_row,center_col-1,count);
+    //left room
+    recmaze(start_row ,start_col,center_row,center_col,count);
+    let left_ran = Math.floor((Math.random() * center_col) + center_row);
+    console.log();
     //right room
-    maze_gen(start_row ,center_col +1,center_row-1,end_col,count);
+    recmaze(start_row ,center_col,center_row,end_col,count);
+    let right_ran = Math.floor((Math.random() * center_col) + center_row);
+    console.log();
     //left-bottom room
-   maze_gen(center_row+1,start_col,end_row,center_col-1,count);
-   //right-bottom room
-   maze_gen(center_row,center_col+1,end_row-1,end_col,count);
+    recmaze(center_row,start_col,end_row,center_col,count);
+    let left_bottom_ran = Math.floor((Math.random() * center_col) + center_row);
+    console.log();
+    //right-bottom room
+    recmaze(center_row,center_col,end_row,end_col,count);
+    let right_bottom_ran = Math.floor((Math.random() * center_col) + center_row);
+    console.log();
+    //space columns filled
+    let available_col = Math.floor((start_col + center_col)/2);
+    if(available_col >= 2){
+        for(let i = start_row;i<=center_row;i=i+1){
+            fillWall(i,available_col);
+        }
+    }
 }
 function fillWall(row,col){
     let start = document.getElementById('start').parentNode.id;

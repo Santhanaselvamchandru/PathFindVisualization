@@ -5,10 +5,10 @@ class UI{
         for(let i =0 ; i<rows ; i++){
             var tr = document.createElement('tr');
             tr.setAttribute('class','unvisited');
-            tr.setAttribute('id',`${i+1}`);
+            tr.setAttribute('id',`${i}`);
             for(let j = 0 ; j<column;j++){
                 var td = document.createElement('td');
-                td.setAttribute('id',`${i+1}-${j+1}`);
+                td.setAttribute('id',`${i}-${j}`);
                 td.setAttribute('ondrop','UI.onDrop(event)');
                 td.setAttribute('ondragover','UI.onDragover(event)');
                 tr.appendChild(td);
