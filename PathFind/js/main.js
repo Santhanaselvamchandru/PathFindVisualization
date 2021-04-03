@@ -1,110 +1,119 @@
-class UI{
-    static board = document.getElementById('board');
-    // Table Columns and rows create 
-    static NodesCreate(rows,column){
-        for(let i =0 ; i<rows ; i++){
-            var tr = document.createElement('tr');
-            tr.setAttribute('class','unvisited');
-            tr.setAttribute('id',`${i}`);
-            for(let j = 0 ; j<column;j++){
-                var td = document.createElement('td');
-                td.setAttribute('id',`${i}-${j}`);
-                td.setAttribute('ondrop','UI.onDrop(event)');
-                td.setAttribute('ondragover','UI.onDragover(event)');
-                tr.appendChild(td);
-            }
-            board.appendChild(tr);
+container = document.getElementById('container');
+let row = 10;
+let col = 20;
+let cells = [];
+//cell initialization
+class cell{
+    constructor(i,j){
+        this.row = i;
+        this.col = j;
+        this.isVisited = false;
+        this.isWall = false;
+    }
+}
+function setup(){
+    /*for(let i = 0;i < row;i++){
+        let tr = document.createElement('tr');
+        tr.className = `row-${i}`;
+        for(let j = 0;j<col;j++){
+            let td = document.createElement('td');
+            td.className = `${i}-${j}`
+            tr.appendChild(td);
         }
-    }
-    //wall creation
-    static wallCreation(row , col){
-        let cells = board.querySelectorAll('td');
-        this.startNode(row,col);
-        this.targetNode(row,col);
-         
-    }
-    //start and target elements create
-    static nodeCreate(name){
-        var div = document.createElement('div');
-        div.setAttribute('id',name);
-        div.setAttribute('draggable','true');
-        div.setAttribute('ondragstart','UI.dragStart(event)');
-        return div;
-    }
-    //start node default place
-    static startNode(row,col){
-        let get_row = row / 2;
-        let get_col = Math.round(col / 3);
-        let startPoint = document.getElementById(`${get_row}-${get_col}`); 
-        startPoint.appendChild(UI.nodeCreate('start')); 
-    }
-    // activate draggable events
-    static dragStart(e){
-        e.dataTransfer.setData('text',e.target.id);
-    }
-    static onDrop(e){
-        e.preventDefault();
-        var data = e.dataTransfer.getData('text');
-        if(data === 'start' || data === 'target'){
-            e.target.appendChild(document.getElementById(data));
+        container.appendChild(tr);
+    }*/
+    for(let i = 0;i<row;i++){
+        let rows = [];
+        for(let j = 0;j<col;j++){
+            let cell_s = new cell(i,j);
+            rows.push(cell_s);
         }
+        cells.push(rows);
     }
-    static onDragover(e){
-        if(e.target.id !== 'start' && e.target.id !== 'target' && e.target.className !== 'walls'){
-            e.preventDefault();
-        }
-    }
-    //target node default place
-    static targetNode(row,col){
-        let get_row = row / 2;
-        let get_col = Math.round(col / 3); 
-        let targetPoint = document.getElementById(`${get_row}-${get_col + 15}`);
-        targetPoint.appendChild(UI.nodeCreate('target'));
-    }
-    //header list display events
-    static displayUl(){
-        let algo = document.getElementById('algo');
-        let algoUl = document.getElementById('algo-ul');
-        let maze = document.getElementById('maze');
-        let mazeUl = document.getElementById('maze-ul');
-        algo.addEventListener('click',()=>{
-            if(algoUl.style.display === 'none'){
-                if(mazeUl.style.display === 'block'){
-                    mazeUl.style.display = 'none';
-                    algoUl.style.display = 'block';
-                }
-                else{
-                    algoUl.style.display = 'block';
-                }                
-            }   
-            else{
-                algoUl.style.display = 'none';
-            }
+    console.log(cells)
+    cells.forEach(r =>{
+        let tr = document.createElement('tr');
+        r.forEach( c =>{
+            let td = document.createElement('td');
+            td.className = `${r}-${c}`
+            tr.appendChild(td);
         })
-        maze.addEventListener('click',()=>{
-            if(mazeUl.style.display === 'none'){
-                if(algoUl.style.display === 'block'){
-                    algoUl.style.display = 'none';
-                    mazeUl.style.display = 'block';
-                }
-                else{
-                    mazeUl.style.display = 'block';
-                }
-            }   
-            else{
-                mazeUl.style.display = 'none';
-            }
-        })
-    }
+        container.appendChild(tr);
+    })
+    
+}
+setup();
 
+function DFS(start_row,start_col){
+    let unvisited = new queue();
+    let i = start_row;
+    let j = start_col;
+    //let target = '10-20';
+    let visit = document.getElementsByClassName(`${i}-${j}`)[0];
+    visit.className += ' visited';
+    let left = document.getElementsByClassName(`${i}-${j-1}`)[0];
+    let right = document.getElementsByClassName(`${i}-${j+1}`)[0];
+    let top = document.getElementsByClassName(`${i-1}-${j}`)[0];
+    let bottom = document.getElementsByClassName(`${i+1}-${j}`)[0];
+    if(left){
+        if(left.className !== 'visited'){
+            unvisited.push(i+'left '+j-1)                   
+        }
+    }
+    if(right){
+        if(right.className !== 'visited'){
+            unvisited.push((i+' '+j+1))                  
+        }
+    }
+    if(top){
+        if(top.className !== 'visited'){
+            unvisited.push(i-1+' '+j)              
+        }
+    }
+    if(bottom){
+        if(bottom.className !== 'visited'){
+            unvisited.push(i+1+' '+j)                   
+        }
+    }
+    console.log(unvisited)
 }
-//Function calls
-function FunctionCalls(){
-    let board = document.getElementById('board');
-    let row = Math.floor(board.clientHeight /27.2);
-    let col = Math.floor(board.clientWidth / 30.5);
-    UI.displayUl();
-    UI.NodesCreate(row , col);
-    UI.wallCreation(row , col);
+
+class queue{
+    constructor(){
+        this.arr = [];
+        this.front = -1;
+        this.rear = -1;
+    }
+    push(item){
+        if(this.front == -1){
+            this.front = 0;
+            this.rear = 0;
+            this.arr[this.front] = item;
+            return;
+        }
+        this.rear +=1;
+        this.arr[this.rear] = item;
+    }
+    pop(){
+        if(this.rear == -1){
+            return
+        }
+        let temp = this.arr[this.front];
+        this.front += 1;
+        if(this.front > this.rear){
+            this.front = -1;
+            this.rear = -1;
+        }
+        return temp;
+    }
 }
-FunctionCalls();
+
+//DFS(1,1)
+
+
+
+
+
+
+
+
