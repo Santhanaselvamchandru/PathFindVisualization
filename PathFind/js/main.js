@@ -2,82 +2,86 @@ container = document.getElementById('container');
 let row = 10;
 let col = 20;
 let cells = [];
+let unvisited = undefined;
 //cell initialization
 class cell{
-    constructor(i,j){
+    constructor(i,j,visit,wall){
         this.row = i;
         this.col = j;
-        this.isVisited = false;
-        this.isWall = false;
+        this.isVisited = visit;
+        this.isWall = wall;
     }
 }
 function setup(){
-    /*for(let i = 0;i < row;i++){
-        let tr = document.createElement('tr');
-        tr.className = `row-${i}`;
-        for(let j = 0;j<col;j++){
-            let td = document.createElement('td');
-            td.className = `${i}-${j}`
-            tr.appendChild(td);
-        }
-        container.appendChild(tr);
-    }*/
     for(let i = 0;i<row;i++){
         let rows = [];
         for(let j = 0;j<col;j++){
-            let cell_s = new cell(i,j);
+            let cell_s = new cell(i,j,false,false);
             rows.push(cell_s);
         }
         cells.push(rows);
     }
-    console.log(cells)
+    //console.log(cells)
     cells.forEach(r =>{
         let tr = document.createElement('tr');
         r.forEach( c =>{
             let td = document.createElement('td');
-            td.className = `${r}-${c}`
+    
+            td.setAttribute('id',`${c.row}-${c.col}`);
             tr.appendChild(td);
+
+            if(c.isVisited){
+                td.className += ' visited';
+            }
+            if(c.isWall){
+                td.className += ' wall';
+            }
         })
         container.appendChild(tr);
     })
-    
 }
-setup();
-
-function DFS(start_row,start_col){
-    let unvisited = new queue();
+function DFS(start_row,start_col,Queue){
     let i = start_row;
     let j = start_col;
     //let target = '10-20';
-    let visit = document.getElementsByClassName(`${i}-${j}`)[0];
-    visit.className += ' visited';
-    let left = document.getElementsByClassName(`${i}-${j-1}`)[0];
-    let right = document.getElementsByClassName(`${i}-${j+1}`)[0];
-    let top = document.getElementsByClassName(`${i-1}-${j}`)[0];
-    let bottom = document.getElementsByClassName(`${i+1}-${j}`)[0];
+    let visit = document.getElementById(`${i}-${j}`);
+    visit.setAttribute('class','visited');
+    let left = document.getElementById(`${i}-${j-1}`);
+    let right = document.getElementById(`${i}-${j+1}`);
+    let top = document.getElementById(`${i-1}-${j}`);
+    let bottom = document.getElementById(`${i+1}-${j}`);
     if(left){
         if(left.className !== 'visited'){
-            unvisited.push(i+'left '+j-1)                   
+            Queue.push(left.id)              
         }
     }
     if(right){
         if(right.className !== 'visited'){
-            unvisited.push((i+' '+j+1))                  
+            Queue.push(right.id)                   
         }
     }
     if(top){
         if(top.className !== 'visited'){
-            unvisited.push(i-1+' '+j)              
+            Queue.push(top.id)              
         }
     }
     if(bottom){
         if(bottom.className !== 'visited'){
-            unvisited.push(i+1+' '+j)                   
+            Queue.push(bottom.id)                    
         }
     }
-    console.log(unvisited)
-}
+    if(!Queue.isEmpty()){
+        let front = Queue.front;
+        let rear = Queue.rear;
+        for(let i = front;i<rear;i++){
+            let temp = Queue.pop();
+            temp = temp.split('-');
+            console.log(Queue.arr);
+            DFS(temp[0],temp[1],Queue);
 
+        }
+    }
+}
 class queue{
     constructor(){
         this.arr = [];
@@ -96,19 +100,22 @@ class queue{
     }
     pop(){
         if(this.rear == -1){
-            return
+            return false;
         }
         let temp = this.arr[this.front];
         this.front += 1;
-        if(this.front > this.rear){
+        if(this.front >= this.rear){
             this.front = -1;
             this.rear = -1;
         }
         return temp;
     }
+    isEmpty(){
+        return (this.arr.length == 0)
+    }
 }
-
-//DFS(1,1)
+setup();
+DFS(1,1,unvisited = new queue());
 
 
 
