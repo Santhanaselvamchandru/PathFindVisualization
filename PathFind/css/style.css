@@ -3,9 +3,9 @@
     padding : 0;
     box-sizing : border-box;
 }
-#container{
+#board{
     border-collapse : collapse;
-    margin: 5em auto;
+    margin: 2em auto;
     border:1px solid #000;
 }
 td{
@@ -13,6 +13,39 @@ td{
     width : 40px;
     height : 40px;
 }
-.visited{
+.start{
     background-color : red;
+}
+.target{
+    background-color : green;
+}
+.visited{
+    background: #1FA2FF;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    animation : ani 1.5s ease-out;
+}
+@keyframes ani{
+    0% {
+        transform: scale(0);
+        background-image : radial-gradient(circlet , rgba(71, 118, 230,0.3) 25%,rgba(142, 84, 233,0.3) 50%,rgba(142, 84, 233,0.3) 75%,rgba(71, 119, 230,0.3) 100%);
+        border-radius: 100%;
+    }
+    50% {
+        transform : scale(0.5);
+        background-image : radial-gradient(circle , rgba(71, 118, 230,0.5) 25%,rgba(142, 84, 233,0.5) 50%,rgba(142, 84, 233,0.5) 75%,rgba(71, 119, 230,0.5) 100%);
+        border-radius: 100%;
+    }
+    75% {
+        transform: scale(0.8);
+        background-image : radial-gradient(circle , rgba(71, 118, 230,0.7) 25%,rgba(142, 84, 233,0.7) 50%,rgba(142, 84, 233,0.7) 75%,rgba(71, 119, 230,0.7) 100%);
+        border-radius: 100%;
+    }
+    100% {
+        transform: scale(1.2);
+        background-image : radial-gradient(circle , rgba(71, 118, 230,1) 25%,rgba(142, 84, 233,1) 50%,rgba(142, 84, 233,1) 75%,rgba(71, 119, 230,1) 100%);
+    }
+}
+.wall{
+    background-color : #333;
 }
