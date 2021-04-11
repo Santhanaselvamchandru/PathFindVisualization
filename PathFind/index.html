@@ -12,43 +12,49 @@
         <div>
             <h1>PathFinding Visualization</h1>
         </div>
-            <div id= 'contents'>
+        <div id= 'contents'>
+            <div>
+                <button id = 'algo'>Algorithms</button>
                 <div>
-                    <h3 id = 'algo'>Algorithms</h3>
-                    <div>
-                        <ul id = 'algo-list'>
-                            <li>Breadth First Search</li>
-                            <li>Depth First Search</li>
-                        </ul>
-                    </div>
+                    <ul class = 'algo-list'>
+                        <li id = 'bfs'>Breadth First Search</li>
+                        <li id = 'dfs'>Depth First Search</li>
+                    </ul>
                 </div>
+            </div>
+            <div>
+                <button id = 'maze'>Maze & Patterns</button>
                 <div>
-                    <h3 id = 'maze'>Maze & Patterns</h3>
-                    <div>
-                        <ul id = 'maze-list'>
-                            <li>Recursive Division</li>
-                            <li>Basic Random Maze</li>
-                        </ul>
-                    </div>
+                    <ul class = 'maze-list'>
+                        <li id = 'recdiv'>Recursive Division</li>
+                        <li id = 'basran'>Basic Random Maze</li>
+                    </ul>
                 </div>
+            </div>
+            <div>
+                <button id = 'visualize'>Visualize</button>
+            </div>
+            <div>
+                <button id = 'speed'>speed : <span id = 'speed-track'>Fast</span></button>
                 <div>
-                    <h3 id = 'visualize'>Visualize</h3>
+                    <ul class = 'speed-list'>
+                        <li id= 'speed-fast'>Fast</li>
+                        <li id = 'speed-medium'>Medium</li>
+                        <li id = 'speed-slow'>Slow</li>
+                    </ul>
                 </div>
-                <div>
-                    <h3>speed : <span id = 'speed'>Fast</span></h3>
-                    <div>
-                        <ul id = 'speed-list'>
-                            <li>Fast</li>
-                            <li>Medium</li>
-                            <li>Slow</li>
-                        </ul>
-                    </div>
-                </div>
+            </div>
+            <div>
+                <button id = 'clear-board'>Clear Board</button>
+            </div>
+            <div>
+                <button id = 'clear-walls-weight'>Clear wall & weights</button>
             </div>
         </div>
     </header>
     <table id="board"></table>
 </body>
 <script src="js/BFS.js"></script>
+<script src="js/DFS.js"></script>
 <script src="js/main.js"></script>
 </html>
