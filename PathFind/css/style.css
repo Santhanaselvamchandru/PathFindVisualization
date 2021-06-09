@@ -119,3 +119,59 @@ td{
 .wall{
     background-color : #333;
 }
+.start{
+    width : 30px;
+    height : 30px;
+    background-image : url('../images_icons/start-node.svg');
+    background-repeat : no-repeat;
+    background-position : center;
+    animation : start_target_ani 0.5s ease-in-out;
+}
+.target{
+    width : 30px;
+    height : 30px;
+    background-image : url('../images_icons/circle.svg');
+    background-repeat : no-repeat;
+    background-position : center;
+    animation : start_target_ani 0.5s ease-in-out;
+}
+@keyframes start_target_ani{
+    0%{
+        transform : scale(0.3); 
+    }
+    50%{
+        transform : scale(0.5); 
+    }
+    75%{
+        transform : scale(0.7); 
+    }
+    100%{
+        transform : scale(1); 
+    }
+}
+.no-algo-alert{
+    position : absolute;
+    background-color : #fff;
+    padding : 4rem;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%,-50%);
+    box-shadow : 0 0 5px 5px rgba(0,0,0,0.2);
+    display : none;
+}
+.no-algo-alert h1{
+    font-size : 1.5rem;
+    color :rgba(9, 132, 227,1);
+    text-align : center;
+    margin : 2px;
+}
+#close_btn{
+    position : absolute;
+    right : 20px;
+    top : 20px;
+    color : rgba(0,0,0,0.7);
+}
+#close_btn i{
+    font-size : 1.5rem;
+    cursor : pointer;
+}

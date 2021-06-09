@@ -41,8 +41,18 @@ function setup(){
     grid.forEach( g_r =>{
         draw(g_r)
     })
-}
+    let start = document.createElement('div');
+    start.setAttribute('class','start');
+    let start_pos_row = Math.floor(row/2);
+    let start_pos_col = Math.floor(col/row);
+    document.getElementById(`${start_pos_row}-${start_pos_col}`).appendChild(start);
 
+    let target = document.createElement('div');
+    target.setAttribute('class','target');
+    let target_pos_row = Math.floor(row/2);
+    let target_pos_col = Math.floor(col-5);
+    document.getElementById(`${target_pos_row}-${target_pos_col}`).appendChild(target);
+}
 // display visited nodes
 function update_node(node){
     let ele = document.getElementById(`${node.i}-${node.j}`);
@@ -56,7 +66,7 @@ function update_node(node){
         ele.setAttribute('class','wall');
     }
 }
-let speed = undefined;
+let default_speed = 5;
 function headerSetup(){
     let algo = document.getElementById('algo');
     let algo_list = document.getElementsByClassName('algo-list')[0];
@@ -73,7 +83,6 @@ function headerSetup(){
             algo_list.style.display = 'none';
         }
     })
-
     maze.addEventListener('click',()=>{
         if(maze_list.style.display == 'none'){
             maze_list.style.display = 'block';
@@ -91,7 +100,6 @@ function headerSetup(){
             speed_list.style.display = 'none';
         }
     })
-
     // drop-down menu is still visible to not active then invisible function
     window.onclick = function(event){
         if(!event.target.matches('#algo')){
@@ -109,7 +117,6 @@ function headerSetup(){
                 open.style.display = 'none';
             }
         }
-
         if(!event.target.matches('#speed')){
             let speed_list1 = document.getElementsByClassName('speed-list');
             for(let i = 0; i < speed_list1.length;i++ ){
@@ -118,19 +125,21 @@ function headerSetup(){
             }
         }
     }
-    // select algorith section
+    // select algorithm section
+    let current_algo = undefined;
+    let action_algo = false;
     let bfs = document.getElementById('bfs');
     let dfs = document.getElementById('dfs');
     let recursive_division = document.getElementById('recdiv');
     let basic_random = document.getElementById('basran');
     let visualize = document.getElementById('visualize');
-    let current = undefined;
+    let no_algo_alert = document.getElementsByClassName('no-algo-alert')[0];
 
     bfs.addEventListener('click', ()=>{
-        current = 'bfs';
+        current_algo = 'bfs';
     });
     dfs.addEventListener('click', ()=>{
-        current = 'dfs';
+        current_algo = 'dfs';
     });
     recursive_division.addEventListener('click', ()=>{
         console.log('recursive');
@@ -138,58 +147,82 @@ function headerSetup(){
     basic_random.addEventListener('click', ()=>{
         console.log('basic');
     });
-
-    visualize.addEventListener('click',()=>{
-
-        if(current == 'bfs'){
-            BFS(grid[0][0],grid[5][9],speed);
-        }
-        else if(current = 'dfs'){
-            DFS(grid[0][0],grid[10][9],speed);
-        }
-        else{
-            console.log('Select Algorithm');
-        }
-    });
-
     let speed_track = document.getElementById('speed-track');
     let speed_fast = document.getElementById('speed-fast');
     let speed_medium = document.getElementById('speed-medium');
     let speed_slow = document.getElementById('speed-slow');
 
     speed_fast.addEventListener('click', ()=>{
-        speed = 50;
+        default_speed = 10;
         speed_track.innerText = 'Fast';
     });
     speed_medium.addEventListener('click', ()=>{
-        speed = 75;
+        default_speed = 50;
         speed_track.innerText = 'Medium';
     });
     speed_slow.addEventListener('click', ()=>{
-        speed = 100;
+        default_speed = 100;
         speed_track.innerText = 'Slow';
     });
 
-    let clear_board = document.getElementById('clear-board');
-
-    clear_board.addEventListener('click',()=>{
-        for(let i = 0; i < grid.length ; i++){
-            for(let j = 0; j < grid[0].length ; j++){
-                let node = grid[i][j];
-                node.isVisited = false;
-                node.isWall = false;
-                node.prev = null;
-            }
-        }
-        for(let i = 0; i < grid.length ; i++){
-            for(let j = 0; j < grid[0].length ; j++){
-                let visited_cell = document.getElementById(`${i}-${j}`);
-                if(visited_cell.className == 'visited' || visited_cell.className == 'wall' || visited_cell.className == 'shortPath'){
-                    visited_cell.removeAttribute('class');
-                }
-            }
-        }
+    let close_no_algo = document.getElementById('close_btn');
+    close_no_algo.addEventListener('click',()=>{
+        no_algo_alert.style.display = 'none';
     })
+
+    visualize.addEventListener('click',()=>{
+        let s = document.getElementsByClassName('start')[0].parentNode.id;
+        let t = document.getElementsByClassName('target')[0].parentNode.id;
+        let start_row = s.split('-')[0];
+        let start_col = s.split('-')[1];
+        let target_row = t.split('-')[0];
+        let target_col = t.split('-')[1];
+        if(!action_algo){
+            if(current_algo === 'bfs'){
+                unvisited_queue = []
+                BFS(grid[start_row][start_col],grid[target_row][target_col],default_speed);
+                action_algo = true;
+            }
+            else if(current_algo === 'dfs'){
+                unvisited_stack = []
+                DFS(grid[start_row][start_col],grid[target_row][target_col],default_speed);
+                action_algo = true;
+            }
+            else{
+                no_algo_alert.style.display = 'block';
+                console.log('Select Algorithm');
+                action_algo = false;
+            }
+        }
+        else{
+
+            console.log('Please clear board!');
+        }
+    });
+    let clear_board = document.getElementById('clear-board');
+    clear_board.addEventListener('click',()=>{
+        clearBoard();
+        action_algo = false;
+        current_algo = undefined;
+    })
+}
+function clearBoard(){
+    for(let i = 0; i < grid.length ; i++){
+        for(let j = 0; j < grid[0].length ; j++){
+            let node = grid[i][j];
+            node.isVisited = false;
+            node.isWall = false;
+            node.prev = null;
+        }
+    }
+    for(let i = 0; i < grid.length ; i++){
+        for(let j = 0; j < grid[0].length ; j++){
+            let visited_cell = document.getElementById(`${i}-${j}`);
+            if(visited_cell.className == 'visited' || visited_cell.className == 'wall' || visited_cell.className == 'shortPath'){
+                visited_cell.classList = '';
+            }
+        }
+    }
 }
 headerSetup();
 setup();

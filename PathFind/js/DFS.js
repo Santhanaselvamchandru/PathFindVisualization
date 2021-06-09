@@ -2,11 +2,6 @@ let unvisited_stack = [];
 // Depth First Search
 function DFS(start_node,target_node,speed){
     const dosearch = async()=>{
-        //visulaize start and target node
-        let s = document.getElementById(`${start_node.i}-${start_node.j}`);
-        let t = document.getElementById(`${target_node.i}-${target_node.j}`);
-        s.style.backgroundColor = 'green';
-        t.style.backgroundColor = 'red';
 
         //start_node push in to unvisited stack
         start_node.isVisited = true; 

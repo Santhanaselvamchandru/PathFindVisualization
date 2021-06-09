@@ -3,20 +3,12 @@ let unvisited_queue = [];
 const sleep = (ms) =>{
     return new Promise(resolve => setTimeout(resolve,ms));
 }
-
 // Breadth First Search
 function BFS(start_node,target_node,speed){
     const dosearch = async()=>{
-        //visulaize start and target node
-        let s = document.getElementById(`${start_node.i}-${start_node.j}`);
-        let t = document.getElementById(`${target_node.i}-${target_node.j}`);
-        s.style.backgroundColor = 'green';
-        t.style.backgroundColor = 'red';
-
         //start_node push in to unvisited Queue
-        start_node.isVisited = true; 
+        //start_node.isVisited = true; 
         unvisited_queue.push(start_node);
-
         while(unvisited_queue.length > 0 ){
             // get Front node on queue
             let current_node = unvisited_queue.shift();
@@ -29,6 +21,7 @@ function BFS(start_node,target_node,speed){
                 await sleep(speed);
                 //check current node is target node is true break the searching
                 if(current_node == target_node){
+                    shortestPath(start_node,target_node);
                     break;
                 }
                 current_node.isVisited = true;
@@ -36,7 +29,6 @@ function BFS(start_node,target_node,speed){
             }
             findNeighbours_bfs(current_node);
         }
-        shortestPath(start_node,target_node);
     }
     dosearch();
 }
