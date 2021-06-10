@@ -76,7 +76,7 @@ function findNeighbours_bfs(node){
 }
 //shortest path BFS and DFS
 function shortestPath(start_node,finish_node){
-    let cur = finish_node.prev;
+    let cur = finish_node;
     let Path = [];
     while(cur !== start_node){
         Path.push(cur);

@@ -111,12 +111,13 @@ td{
     }
 }
 .current{
-    background-color: rgba(87, 88, 187,1.0);
+    background: #fff200;
+
 }
 .shortPath{
     background-color: rgb(217, 235, 61);
 }
-.wall{
+.walls{
     background-color : #333;
 }
 .start{
