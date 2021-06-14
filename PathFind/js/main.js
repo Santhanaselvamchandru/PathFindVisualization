@@ -2,7 +2,8 @@ let board = document.getElementById('board');
 let row = 20;
 let col = 40;
 var grid = [];
-
+// block function variable when start action this will be use
+let block_var = false;
 // each column objects
 function Cell(i,j){
     this.i = i;
@@ -11,34 +12,54 @@ function Cell(i,j){
     this.isWall = false;
     this.prev = null;
 }
-
-// start and target nodes do drag and drop
-
-function allow_drop(e){
-    if(e.target.id !== 'start_node' && e.target.id !== 'target_node'){
-        e.preventDefault();
-    }
-}
-
-function drag(e){
-    e.dataTransfer.setData('text', e.target.id);
-}
-function drop(e){
-    e.preventDefault();
-    let data = e.dataTransfer.getData('text');
-    if(data === 'start_node' || data === 'target_node'){
-        e.target.appendChild(document.getElementById(data));  
-    }  
-}
-
 // create cells in table
 function draw(r){
     let tr = document.createElement('tr');
     r.forEach(c =>{
         let td = document.createElement('td');
         td.id = `${c.i}-${c.j}`;
-        td.setAttribute('ondrop','drop(event)');
-        td.setAttribute('ondragover','allow_drop(event)');
+        // drop event
+        td.addEventListener('drop',(event)=>{
+            if(!block_var){
+                event.preventDefault();
+                let data = event.dataTransfer.getData('text');
+                if(data === 'start_node' || data === 'target_node'){
+                    if (document.getElementById(data).parentNode.className === 'wall'){
+                        document.getElementById(data).parentNode.className === '';
+                    }
+                    event.target.appendChild(document.getElementById(data));  
+                } 
+            }
+        })
+        // drag over event
+        td.addEventListener('dragover',(event)=>{
+            if(!block_var){
+                if(event.target.id !== 'start_node' && event.target.id !== 'target_node' && event.target.className !== 'wall'){
+                    event.preventDefault();
+                }
+            }
+        })
+        // walls click event
+        td.addEventListener('click',(event)=>{
+            if(!block_var){
+                if(event.target.id !== 'start_node' && event.target.id !== 'target_node'){
+                    let tags = document.getElementById(event.target.id);
+                    if(event.target.className){
+                        tags.removeAttribute('class');
+                        let r = event.target.id.split('-')[0];
+                        let c = event.target.id.split('-')[1];
+                        grid[r][c].isWall = false;
+                    }
+                    else{
+                        tags.setAttribute('class','wall');
+                        let r = event.target.id.split('-')[0];
+                        let c = event.target.id.split('-')[1];
+                        grid[r][c].isWall = true;
+                    }
+                }
+            }
+        })
+        
         if(c.isVisited){
             td.setAttribute('class','visited');
         }
@@ -70,8 +91,13 @@ function setup(){
     let start_pos_row = Math.floor(row/2);
     let start_pos_col = Math.floor(col/row);
     document.getElementById(`${start_pos_row}-${start_pos_col}`).appendChild(start);
-    start.setAttribute('draggable','true');
-    start.setAttribute('ondragstart','drag(event)');
+    // drag events
+    start.draggable = true;
+    start.addEventListener('dragstart',(event)=>{
+        if(!block_var){
+            event.dataTransfer.setData('text', event.target.id);
+        }
+    })
 
     let target = document.createElement('div');
     target.setAttribute('class','target');
@@ -79,8 +105,13 @@ function setup(){
     let target_pos_row = Math.floor(row/2);
     let target_pos_col = Math.floor(col-5);
     document.getElementById(`${target_pos_row}-${target_pos_col}`).appendChild(target);
-    target.setAttribute('draggable','true');
-    target.setAttribute('ondragstart','drag(event)');
+    // drag events
+    target.draggable = true;
+    target.addEventListener('dragstart',(event)=>{
+        if(!block_var){
+            event.dataTransfer.setData('text', event.target.id);
+        }
+    })
 }
 // display visited nodes
 function update_node(node){
@@ -198,42 +229,62 @@ function headerSetup(){
     close_no_algo.addEventListener('click',()=>{
         no_algo_alert.style.display = 'none';
     })
-    // visualize algorithm event
-    visualize.addEventListener('click',()=>{
-        let s = document.getElementsByClassName('start')[0].parentNode.id;
-        let t = document.getElementsByClassName('target')[0].parentNode.id;
-        let start_row = s.split('-')[0];
-        let start_col = s.split('-')[1];
-        let target_row = t.split('-')[0];
-        let target_col = t.split('-')[1];
-        if(!action_algo){
-            if(current_algo === 'bfs'){
-                unvisited_queue = []
-                BFS(grid[start_row][start_col],grid[target_row][target_col],default_speed);
-                action_algo = true;
-            }
-            else if(current_algo === 'dfs'){
-                unvisited_stack = []
-                DFS(grid[start_row][start_col],grid[target_row][target_col],default_speed);
-                action_algo = true;
-            }
-            else{
-                no_algo_alert.style.display = 'block';
-                console.log('Select Algorithm');
-                action_algo = false;
+    // clear walls and weights
+    document.getElementById('clear-walls-weight').addEventListener('click',()=>{
+        if(!block_var){
+            for(let i = 0; i < grid.length ; i++){
+                for(let j = 0; j < grid[0].length ; j++){
+                    let node = grid[i][j];
+                    node.isWall = false;
+                    let wall = document.getElementById(`${i}-${j}`);
+                    if(wall.className == 'wall'){
+                        wall.classList = '';
+                    }
+                }
             }
         }
-        else{
-
-            console.log('Please clear board!');
+    })
+    // visualize algorithm event
+    visualize.addEventListener('click',()=>{
+        if(!block_var){
+            let s = document.getElementsByClassName('start')[0].parentNode.id;
+            let t = document.getElementsByClassName('target')[0].parentNode.id;
+            let start_row = s.split('-')[0];
+            let start_col = s.split('-')[1];
+            let target_row = t.split('-')[0];
+            let target_col = t.split('-')[1];
+            if(!action_algo){
+                if(current_algo === 'bfs'){
+                    block_var = true;
+                    unvisited_queue = []
+                    BFS(grid[start_row][start_col],grid[target_row][target_col],default_speed);
+                    action_algo = true;
+                }
+                else if(current_algo === 'dfs'){
+                    block_var = true;
+                    unvisited_stack = []
+                    DFS(grid[start_row][start_col],grid[target_row][target_col],default_speed);
+                    action_algo = true;
+                }
+                else{
+                    no_algo_alert.style.display = 'block';
+                    console.log('Select Algorithm');
+                    action_algo = false;
+                }
+            }
+            else{
+                console.log('Please clear board!');
+            }
         }
     });
     // clear board
     let clear_board = document.getElementById('clear-board');
     clear_board.addEventListener('click',()=>{
-        clearBoard();
-        action_algo = false;
-        current_algo = undefined;
+        if(!block_var){
+            clearBoard();
+            action_algo = false;
+            current_algo = undefined;
+        }
     })
 }
 function clearBoard(){
@@ -241,14 +292,9 @@ function clearBoard(){
         for(let j = 0; j < grid[0].length ; j++){
             let node = grid[i][j];
             node.isVisited = false;
-            node.isWall = false;
             node.prev = null;
-        }
-    }
-    for(let i = 0; i < grid.length ; i++){
-        for(let j = 0; j < grid[0].length ; j++){
             let visited_cell = document.getElementById(`${i}-${j}`);
-            if(visited_cell.className == 'visited' || visited_cell.className == 'wall' || visited_cell.className == 'shortPath'){
+            if(visited_cell.className == 'visited' || visited_cell.className == 'shortPath'){
                 visited_cell.classList = '';
             }
         }
@@ -258,4 +304,35 @@ headerSetup();
 setup();
 
 // wall creation
+let ispress = false;
+board.addEventListener('mousedown',()=>{
+    ispress = true;
+})
+board.addEventListener('mouseup',()=>{
+    ispress = false;
+})
+board.addEventListener('mousemove',(event)=>{
+    if(!block_var){
+        mouse_move(ispress,event);
+    }
+})
 
+function mouse_move(ispress, event){
+    if(ispress){
+        if(event.target.id !== 'start_node' && event.target.id !== 'target_node' && event.target.parentNode !== 'start_node' && event.target.parentNode !== 'target_node'){
+            let tags = document.getElementById(event.target.id);
+            if(event.target.className){
+                tags.removeAttribute('class');
+                let r = event.target.id.split('-')[0];
+                let c = event.target.id.split('-')[1];
+                grid[r][c].isWall = false;
+            }
+            else{
+                tags.setAttribute('class','wall');
+                let r = event.target.id.split('-')[0];
+                let c = event.target.id.split('-')[1];
+                grid[r][c].isWall = true;
+            }
+        }
+    }
+}

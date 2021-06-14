@@ -13,7 +13,7 @@ function BFS(start_node,target_node,speed){
             // get Front node on queue
             let current_node = unvisited_queue.shift();
             // check current node visited or not
-            if(!current_node.isVisited){
+            if(!current_node.isVisited && !current_node.isWall){
                 //visualize current node
                 let c = document.getElementById(`${current_node.i}-${current_node.j}`);
                 c.setAttribute('class', 'current'); 
@@ -40,7 +40,7 @@ function findNeighbours_bfs(node){
     if(row-1 >= 0 && col < grid[0].length){
         let top = grid[row-1][col];
         let temp = unvisited_queue.indexOf(top);
-        if(temp == -1 && !top.isVisited){
+        if(temp == -1 && !top.isVisited && !top.isWall){
             top.prev = node;
             unvisited_queue.push(top);
         }
@@ -49,7 +49,7 @@ function findNeighbours_bfs(node){
     if(row >= 0 && col+1 < grid[0].length){
         let right = grid[row][col+1];
         let temp = unvisited_queue.indexOf(right)
-        if(temp == -1 && !right.isVisited){
+        if(temp == -1 && !right.isVisited && !right.isWall){
             right.prev = node;
             unvisited_queue.push(right);
         }
@@ -58,7 +58,7 @@ function findNeighbours_bfs(node){
     if(row >= 0 && col-1 >= 0){
         let left = grid[row][col-1];
         let temp = unvisited_queue.indexOf(left)
-        if(temp == -1 && !left.isVisited){
+        if(temp == -1 && !left.isVisited && !left.isWall){
             left.prev = node;
             unvisited_queue.push(left);
         }
@@ -67,7 +67,7 @@ function findNeighbours_bfs(node){
      if(row+1 < grid.length && col >= 0){
         let bottom = grid[row+1][col]
         let temp = unvisited_queue.indexOf(bottom);
-        if(temp == -1 && !bottom.isVisited){
+        if(temp == -1 && !bottom.isVisited && !bottom.isWall){
             bottom.prev = node;
             unvisited_queue.push(bottom);
         }
@@ -84,6 +84,8 @@ function shortestPath(start_node,finish_node){
     }
 
     const VisPath = async()=>{
+        let start = document.getElementById('start_node').parentNode.id;
+        document.getElementById(start).className = 'shortPath';
         for(let p = Path.length-1;p >= 0; p--){
             await sleep(50);
             let sp = document.getElementById(`${Path[p].i}-${Path[p].j}`);
@@ -91,6 +93,7 @@ function shortestPath(start_node,finish_node){
         }
     }
     VisPath();
+    block_var = false;
 }
 
 

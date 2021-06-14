@@ -11,7 +11,7 @@ function DFS(start_node,target_node,speed){
             // get node on stack
             let current_node = unvisited_stack.pop();
             // check current node visited or not
-            if(!current_node.isVisited){
+            if(!current_node.isVisited && !current_node.isWall){
                 //visualize current node
                 let c = document.getElementById(`${current_node.i}-${current_node.j}`);
                 c.setAttribute('class', 'current'); 
@@ -38,7 +38,7 @@ function findNeighbours_dfs(node){
     if(row >= 0 && col-1 >= 0){
         let left = grid[row][col-1];
         let temp = unvisited_stack.indexOf(left)
-        if(temp == -1 && !left.isVisited){
+        if(temp == -1 && !left.isVisited && !left.isWall){
             left.prev = node;
             unvisited_stack.push(left);
         }
@@ -47,7 +47,7 @@ function findNeighbours_dfs(node){
      if(row+1 < grid.length && col >= 0){
         let bottom = grid[row+1][col]
         let temp = unvisited_stack.indexOf(bottom);
-        if(temp == -1 && !bottom.isVisited){
+        if(temp == -1 && !bottom.isVisited && !bottom.isWall){
             bottom.prev = node;
             unvisited_stack.push(bottom);
         }
@@ -56,7 +56,7 @@ function findNeighbours_dfs(node){
     if(row >= 0 && col+1 < grid[0].length){
         let right = grid[row][col+1];
         let temp = unvisited_stack.indexOf(right)
-        if(temp == -1 && !right.isVisited){
+        if(temp == -1 && !right.isVisited && !right.isWall){
             right.prev = node;
             unvisited_stack.push(right);
         }
@@ -65,7 +65,7 @@ function findNeighbours_dfs(node){
     if(row-1 >= 0 && col < grid[0].length){
         let top = grid[row-1][col];
         let temp = unvisited_stack.indexOf(top);
-        if(temp == -1 && !top.isVisited){
+        if(temp == -1 && !top.isVisited && !top.isWall){
             top.prev = node;
             unvisited_stack.push(top);
         }
