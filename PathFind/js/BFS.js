@@ -1,4 +1,5 @@
 let unvisited_queue = [];
+let find_node_bfs = false;
 //sleep method
 const sleep = (ms) =>{
     return new Promise(resolve => setTimeout(resolve,ms));
@@ -20,8 +21,8 @@ function BFS(start_node,target_node,speed){
                 // search speed will be slow function
                 await sleep(speed);
                 //check current node is target node is true break the searching
-                if(current_node == target_node){
-                    shortestPath(start_node,target_node);
+                if(current_node === target_node){
+                    find_node_bfs = true;
                     break;
                 }
                 current_node.isVisited = true;
@@ -29,6 +30,7 @@ function BFS(start_node,target_node,speed){
             }
             findNeighbours_bfs(current_node);
         }
+        shortestPath(start_node,target_node, find_node_bfs);
     }
     dosearch();
 }
@@ -75,24 +77,29 @@ function findNeighbours_bfs(node){
     
 }
 //shortest path BFS and DFS
-function shortestPath(start_node,finish_node){
-    let cur = finish_node;
-    let Path = [];
-    while(cur !== start_node){
-        Path.push(cur);
-        cur = cur.prev;
-    }
-
-    const VisPath = async()=>{
-        let start = document.getElementById('start_node').parentNode.id;
-        document.getElementById(start).className = 'shortPath';
-        for(let p = Path.length-1;p >= 0; p--){
-            await sleep(50);
-            let sp = document.getElementById(`${Path[p].i}-${Path[p].j}`);
-            sp.className = 'shortPath';
+function shortestPath(start_node,finish_node, finish){
+    if(finish){
+        let cur = finish_node;
+        let Path = [];
+        while(cur !== start_node){
+            Path.push(cur);
+            cur = cur.prev;
         }
+
+        const VisPath = async()=>{
+            let start = document.getElementById('start_node').parentNode.id;
+            document.getElementById(start).className = 'shortPath';
+            for(let p = Path.length-1;p >= 0; p--){
+                await sleep(50);
+                let sp = document.getElementById(`${Path[p].i}-${Path[p].j}`);
+                sp.className = 'shortPath';
+            }
+        }
+        VisPath();
     }
-    VisPath();
+    else{
+        console.log("sorry")
+    }
     block_var = false;
 }
 

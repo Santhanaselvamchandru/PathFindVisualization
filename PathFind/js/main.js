@@ -4,6 +4,9 @@ let col = 40;
 var grid = [];
 // block function variable when start action this will be use
 let block_var = false;
+// this variable when drag function ended ispress is become true so drag when will finished ispress is false
+let ispress = false;
+var timeout;
 // each column objects
 function Cell(i,j){
     this.i = i;
@@ -28,6 +31,7 @@ function draw(r){
                         document.getElementById(data).parentNode.className === '';
                     }
                     event.target.appendChild(document.getElementById(data));  
+                    ispress = false;
                 } 
             }
         })
@@ -207,22 +211,22 @@ function headerSetup(){
     basic_random.addEventListener('click', ()=>{
         console.log('basic');
     });
-    let speed_track = document.getElementById('speed-track');
+    let speed_track = document.getElementById('speed');
     let speed_fast = document.getElementById('speed-fast');
     let speed_medium = document.getElementById('speed-medium');
     let speed_slow = document.getElementById('speed-slow');
 
     speed_fast.addEventListener('click', ()=>{
         default_speed = 10;
-        speed_track.innerText = 'Fast';
+        speed_track.innerHTML = 'Speed : Fast <i class="fas fa-caret-down"></i>';
     });
     speed_medium.addEventListener('click', ()=>{
         default_speed = 50;
-        speed_track.innerText = 'Medium';
+        speed_track.innerHTML = 'Speed : Medium <i class="fas fa-caret-down"></i>';
     });
     speed_slow.addEventListener('click', ()=>{
         default_speed = 100;
-        speed_track.innerText = 'Slow';
+        speed_track.innerHTML = 'Speed : Slow <i class="fas fa-caret-down"></i>';
     });
     // may not select algorithm alert window close event
     let close_no_algo = document.getElementById('close_btn');
@@ -268,12 +272,14 @@ function headerSetup(){
                 }
                 else{
                     no_algo_alert.style.display = 'block';
-                    console.log('Select Algorithm');
+                    document.getElementById('msg1').innerText = 'Select Algorithm'
                     action_algo = false;
                 }
             }
             else{
-                console.log('Please clear board!');
+                no_algo_alert.style.display = 'block';
+                document.getElementById('msg1').innerText = 'Please Clear Board.'
+                action_algo = false;
             }
         }
     });
@@ -304,8 +310,9 @@ headerSetup();
 setup();
 
 // wall creation
-let ispress = false;
 board.addEventListener('mousedown',()=>{
+    clearTimeout(timeout);
+    timeout = setTimeout(ispress = false, 5000);
     ispress = true;
 })
 board.addEventListener('mouseup',()=>{
@@ -318,8 +325,8 @@ board.addEventListener('mousemove',(event)=>{
 })
 
 function mouse_move(ispress, event){
-    if(ispress){
-        if(event.target.id !== 'start_node' && event.target.id !== 'target_node' && event.target.parentNode !== 'start_node' && event.target.parentNode !== 'target_node'){
+    if(ispress === true){
+        if(event.target.id !== 'start_node' && event.target.id !== 'target_node'){
             let tags = document.getElementById(event.target.id);
             if(event.target.className){
                 tags.removeAttribute('class');
@@ -333,6 +340,9 @@ function mouse_move(ispress, event){
                 let c = event.target.id.split('-')[1];
                 grid[r][c].isWall = true;
             }
+        }
+        else{
+            return 0;
         }
     }
 }
