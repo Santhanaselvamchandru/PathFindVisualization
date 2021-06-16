@@ -311,38 +311,50 @@ setup();
 
 // wall creation
 board.addEventListener('mousedown',()=>{
-    clearTimeout(timeout);
-    timeout = setTimeout(ispress = false, 5000);
     ispress = true;
 })
 board.addEventListener('mouseup',()=>{
+    clearTimeout(timeout);
+    timeout = setTimeout(ispress = false, 5000);
     ispress = false;
 })
 board.addEventListener('mousemove',(event)=>{
-    if(!block_var){
+    if(!block_var && event.target.id !== 'start_node' && event.target.id !== 'target_node'){
         mouse_move(ispress,event);
     }
 })
 
-function mouse_move(ispress, event){
-    if(ispress === true){
+function mouse_move(ispress1, event){
+    if(ispress1 === true){
         if(event.target.id !== 'start_node' && event.target.id !== 'target_node'){
             let tags = document.getElementById(event.target.id);
             if(event.target.className){
-                tags.removeAttribute('class');
-                let r = event.target.id.split('-')[0];
-                let c = event.target.id.split('-')[1];
-                grid[r][c].isWall = false;
+                try{
+                    tags.removeAttribute('class');
+                    let r = event.target.id.split('-')[0];
+                    let c = event.target.id.split('-')[1];
+                    grid[r][c].isWall = false;
+                }
+                catch(error){
+                    ispress = false;
+                    event.stopPropagation();
+                }
             }
             else{
-                tags.setAttribute('class','wall');
-                let r = event.target.id.split('-')[0];
-                let c = event.target.id.split('-')[1];
-                grid[r][c].isWall = true;
+                try{
+                    tags.setAttribute('class','wall');
+                    let r = event.target.id.split('-')[0];
+                    let c = event.target.id.split('-')[1];
+                    grid[r][c].isWall = true;
+                }
+                catch(err){
+                    ispress =  false;
+                    event.stopPropagation();
+                }
             }
         }
         else{
-            return 0;
+            return false;
         }
     }
 }

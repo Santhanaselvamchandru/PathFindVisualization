@@ -78,7 +78,7 @@ function findNeighbours_bfs(node){
 }
 //shortest path BFS and DFS
 function shortestPath(start_node,finish_node, finish){
-    if(finish){
+    if(finish === true){
         let cur = finish_node;
         let Path = [];
         while(cur !== start_node){
@@ -98,7 +98,9 @@ function shortestPath(start_node,finish_node, finish){
         VisPath();
     }
     else{
-        console.log("sorry")
+        let no_algo_alert = document.getElementsByClassName('no-algo-alert')[0];
+        no_algo_alert.style.display = 'block';
+        document.getElementById('msg1').innerText = 'Sorry didn\'t find. try again.'
     }
     block_var = false;
 }
