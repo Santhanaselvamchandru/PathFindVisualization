@@ -1,9 +1,8 @@
 let unvisited_stack = [];
 let find_node_dfs = false;
 // Depth First Search
-function DFS(start_node,target_node,speed){
+function DFS(start_node,target_node,speed, wait_or_not){
     const dosearch = async()=>{
-
         //start_node push in to unvisited stack
         start_node.isVisited = true; 
         unvisited_stack.push(start_node);
@@ -17,7 +16,8 @@ function DFS(start_node,target_node,speed){
                 let c = document.getElementById(`${current_node.i}-${current_node.j}`);
                 c.setAttribute('class', 'current'); 
                 // search speed will be slow function
-                await sleep(speed);
+                if(wait_or_not)
+                    await sleep(speed);
                 //check current node is target node is true break the searching
                 if(current_node == target_node){
                     find_node_dfs = true;
@@ -28,7 +28,7 @@ function DFS(start_node,target_node,speed){
             }
             findNeighbours_dfs(current_node);
         }
-        shortestPath(start_node,target_node, find_node_dfs);
+        shortestPath(start_node,target_node, find_node_dfs, wait_or_not);
     }
     dosearch();
 }

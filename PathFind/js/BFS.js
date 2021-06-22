@@ -5,7 +5,7 @@ const sleep = (ms) =>{
     return new Promise(resolve => setTimeout(resolve,ms));
 }
 // Breadth First Search
-function BFS(start_node,target_node,speed){
+function BFS(start_node,target_node,speed, wait_or_not){
     const dosearch = async()=>{
         //start_node push in to unvisited Queue
         //start_node.isVisited = true; 
@@ -19,7 +19,8 @@ function BFS(start_node,target_node,speed){
                 let c = document.getElementById(`${current_node.i}-${current_node.j}`);
                 c.setAttribute('class', 'current'); 
                 // search speed will be slow function
-                await sleep(speed);
+                if(wait_or_not)
+                    await sleep(speed);
                 //check current node is target node is true break the searching
                 if(current_node === target_node){
                     find_node_bfs = true;
@@ -30,7 +31,7 @@ function BFS(start_node,target_node,speed){
             }
             findNeighbours_bfs(current_node);
         }
-        shortestPath(start_node,target_node, find_node_bfs);
+        shortestPath(start_node,target_node, find_node_bfs, wait_or_not);
     }
     dosearch();
 }
@@ -77,7 +78,7 @@ function findNeighbours_bfs(node){
     
 }
 //shortest path BFS and DFS
-function shortestPath(start_node,finish_node, finish){
+function shortestPath(start_node,finish_node, finish, wait_or_not){
     if(finish === true){
         let cur = finish_node;
         let Path = [];
@@ -85,15 +86,17 @@ function shortestPath(start_node,finish_node, finish){
             Path.push(cur);
             cur = cur.prev;
         }
-
         const VisPath = async()=>{
             let start = document.getElementById('start_node').parentNode.id;
             document.getElementById(start).className = 'shortPath';
             for(let p = Path.length-1;p >= 0; p--){
-                await sleep(50);
+                if(wait_or_not)
+                    await sleep(50);
                 let sp = document.getElementById(`${Path[p].i}-${Path[p].j}`);
                 sp.className = 'shortPath';
             }
+            finish_node_bfs = false;
+            finish_node_dfs = false;
         }
         VisPath();
     }
@@ -103,6 +106,9 @@ function shortestPath(start_node,finish_node, finish){
         document.getElementById('msg1').innerText = 'Sorry didn\'t find. try again.'
     }
     block_var = false;
+    shortest_path_var = true;
+    find_node_bfs = false;
+    find_node_dfs = false;
 }
 
 
